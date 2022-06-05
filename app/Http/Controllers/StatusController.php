@@ -41,10 +41,25 @@ class StatusController extends Controller
             'name' => 'required'
         ]);
 
-        Status::create([
+        $input = Status::create([
             'name' => $request->name
         ]);
-        return redirect()->route('status.index')->with('success', 'The roles has been create successfully.');
+
+        if ($input) {
+            return redirect()
+                ->route('status.index')
+                ->with([
+                    'success' => 'New status has been created successfully'
+                ]);
+        } else {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with([
+                    'error' => 'Some problem occurred, please try again'
+                ]);
+        }
+        // return redirect()->route('status.index')->with('success', 'The roles has been create successfully.');
     }
 
     /**
@@ -84,11 +99,27 @@ class StatusController extends Controller
             'name' => 'required'
         ]);
 
-        $input = $request->all();
-        $role = Status::find($id);
-        $role->update($input);
+        $status = Status::findOrFail($id);
 
-        return redirect()->route('status.index')->with('success', 'The status has been edit successfully.');
+        $status->update([
+            'name' => $request->name
+        ]);
+
+        if ($status) {
+            return redirect()
+                ->route('status.index')
+                ->with([
+                    'success' => 'New status has been edit successfully'
+                ]);
+        } else {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with([
+                    'error' => 'Some problem occurred, please try again'
+                ]);
+        }
+        // return redirect()->route('status.index')->with('success', 'The status has been edit successfully.');
     }
 
     /**
@@ -99,7 +130,22 @@ class StatusController extends Controller
      */
     public function destroy($id)
     {
-        Status::find($id)->delete();
-        return redirect()->route('status.index')->with('success', 'The status has been destory successfully');
+       $input = Status::find($id)->delete();
+        if ($input) {
+            return redirect()
+                ->route('roles.index')
+                ->with([
+                    'success' => 'New role has been delete successfully'
+                ]);
+        } else {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with([
+                    'error' => 'Some problem occurred, please try again'
+                ]);
+        }
+
+        // return redirect()->route('status.index')->with('success', 'The status has been destory successfully');
     }
 }

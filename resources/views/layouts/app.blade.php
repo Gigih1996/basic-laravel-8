@@ -26,7 +26,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar-expand-md navbar navbar-dark bg-dark shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -45,11 +45,11 @@
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
                         @guest
-                            @if (Route::has('login'))
+                            {{-- @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
-                            @endif
+                            @endif --}}
 
                             {{-- @if (Route::has('register'))
                                 <li class="nav-item">
@@ -57,6 +57,8 @@
                                 </li>
                             @endif --}}
                         @else
+                            <a class="nav-link" href="{{ route('users.index') }}">{{ __('Users') }}</a>
+                            <a class="nav-link" href="{{ route('status.index') }}">{{ __('Status') }}</a>
                             <a class="nav-link" href="{{ route('roles.index') }}">{{ __('Roles') }}</a>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">

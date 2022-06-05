@@ -41,10 +41,26 @@ class RoleController extends Controller
             'name' => 'required'
         ]);
 
-        Role::create([
-            'name' => $request->name
-        ]);
-        return redirect()->route('roles.index')->with('success', 'The roles has been create successfully.');
+        $post = Role::create(['name' => $request->input('name')]);
+        // return dd($post);
+
+        if ($post) {
+            return redirect()
+                ->route('roles.index')
+                ->with([
+                    'success' => 'New role has been created successfully'
+                ]);
+        } else {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with([
+                    'error' => 'Some problem occurred, please try again'
+                ]);
+        }
+
+        
+        // return redirect()->route('roles.index')->with('success', 'The roles has been create successfully.');
 
     }
 
@@ -89,7 +105,22 @@ class RoleController extends Controller
         $role = Role::find($id);
         $role->update($input);
 
-        return redirect()->route('roles.index')->with('success', 'The roles has been edit successfully.');
+        if ($input) {
+            return redirect()
+                ->route('roles.index')
+                ->with([
+                    'success' => 'Update role has been edit successfully'
+                ]);
+        } else {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with([
+                    'error' => 'Some problem occurred, please try again'
+                ]);
+        }
+
+        // return redirect()->route('roles.index')->with('success', 'The roles has been edit successfully.');
     }
 
     /**
@@ -100,7 +131,21 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        Role::find($id)->delete();
-        return redirect()->route('roles.index')->with('success', 'The role has been destory successfully');
+        $input = Role::find($id)->delete();
+        if ($input) {
+            return redirect()
+                ->route('roles.index')
+                ->with([
+                    'success' => 'Role has been delete successfully'
+                ]);
+        } else {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with([
+                    'error' => 'Some problem occurred, please try again'
+                ]);
+        }
+        // return redirect()->route('roles.index')->with('success', 'The role has been destory successfully');
     }
 }
